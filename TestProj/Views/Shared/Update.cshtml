@@ -7,43 +7,56 @@
         margin-bottom: 10px;
         width: 100%;
     }
+    .err{
+       padding-left:2px;
+       font-size:12px;
+    }
+        
 </style>
 <div>
     <form id="myForm">
         @Html.HiddenFor(m => m.Id)
-        @*<div class="row">
-            <div class="col-md-12">*@
-        @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control txt", @placeholder = "First Name" })
-
-
-        @*</div>
-            </div>*@
-        @*<div class="row">
-            <div class="col-md-12">*@
-        @Html.TextBoxFor(m => m.LastName, new { @class = "form-control txt", @placeholder = "Last Name" })
-
-
-        @*</div>
-            </div>*@
-        @*<div class="row">
-            <div class="col-md-12">*@
-        @Html.TextBoxFor(m => m.Email, new { @class = "form-control txt", @placeholder = "Email" })
-
-        @*</div>
+        <div class="row">
+            <div class="col-md-12">                 
+                @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control txt", @placeholder = "First Name *" })                             
+                @*@Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "text-danger" })*@
+                <p id="FNError" class="text-danger err" style="display:none"></p>
+                
             </div>
-            <div class="row">
-                <div class="col-md-12">*@
-        <a href="#" id="btnSubmit" class="btn btn-success">Save</a>
-        @*</div>
-            </div>*@
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                @Html.TextBoxFor(m => m.LastName, new { @class = "form-control txt", @placeholder = "Last Name" })
+                @*@Html.ValidationMessageFor(m => m.LastName, "", new { @class = "text-danger" })*@
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                @Html.TextBoxFor(m => m.Email, new { @class = "form-control txt", @placeholder = "Email" })
+                @*@Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })*@
+                <p id="EmError" class="text-danger err" style="display:none"></p>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-12" style="text-align:center">
+                <a href="#" id="btnSubmit" class="btn btn-success" style="width:30%;"><b>SAVE</b></a>
+            </div>
+        </div>
+
     </form>
 </div>
-@*@section scripts{*@
+
 <script>
 
     $(document).on("click", "#btnSubmit", function (e) {
         e.preventDefault();
-        
+
+        //showErrMessages();
+
         var myformdata = $("#myForm").serialize();
 
         $.ajax({
@@ -51,17 +64,45 @@
             type: "POST",
             url: "/MOCKTBL/Index",
             data: myformdata,
-            success: function () {
-                $("#myPopUpModal").modal("hide");
-                window.location.href = "/MOCKTBL/Index";
-                //alert("success");
-
+            success: function (data) {                
+                if (data) {
+                    $("#myPopUpModal").modal("hide");
+                    window.location.href = "/MOCKTBL/Index";
+                }
+                else {
+                    showErrMessages()
+                }               
+            },
+            error: function () {
+                alert('error');
             }
 
         })
     });
 
-
+    function showErrMessages() {
+        if ($('#FirstName').val().length == 0) {
+            $('#FNError').text("Please enter First name");
+            $('#FNError').css('display', 'block');
+        }
+        
+        if ($('#Email').val().length > 0)
+        {
+            //alert("text");
+            var regPattern = /^\b[A-Z0-9._%-]+@@[A-Z0-9.-]+\.[A-Z]{2,4}\b$/;
+            if (!regPattern.test($('#Email').val())) {
+                $('#EmError').text("Please enter a valid email");
+                $('#EmError').css('display', 'block');
+            }
+        }
+    }
+    function hideErrMessages() {
+        $('#FNError').css('display', 'none');
+        $('#EmError').css('display', 'none');
+    }
+    $(document).ready(function () {
+        hideErrMessages();
+    })
 </script>
-@*}*@
+
 

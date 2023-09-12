@@ -22,6 +22,10 @@ namespace TestProj.Controllers
         [HttpPost]
         public ActionResult Index(MOCKTBLViewModel cust)
         {
+            if (!ModelState.IsValid)
+            {
+                return Json(false, JsonRequestBehavior.DenyGet);
+            }
             MOCKTBL cl = new MOCKTBL
             {
                 FirstName = cust.FirstName,
@@ -30,6 +34,7 @@ namespace TestProj.Controllers
                 Id = cust.Id
             };
             Common.SaveRecord(cl);
+            
             return View(cust);
         }
 
