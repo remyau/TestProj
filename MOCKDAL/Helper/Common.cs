@@ -41,6 +41,22 @@ namespace MOCKDAL.Helper
             }
         }
 
+        public static bool DeleteEntry(int id)
+        {
+            bool result = false;
+            using (var db = new MOCKTESTDBEntities())
+            {
+                if (id > 0)
+                {
+                    var d = db.MOCKTBLs.Find(id);
+                    db.MOCKTBLs.Remove(d);
+                    db.SaveChanges();
+                    result = true;
+                }
+            }
+            return result;
+        }
+
         public static void SaveRecord(UI.MOCKTBL cust)
         {
             using (var db = new MOCKTESTDBEntities())

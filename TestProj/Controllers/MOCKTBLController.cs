@@ -15,8 +15,7 @@ namespace TestProj.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            List<MOCKTBLViewModel> mTbl = Common.GetEntries().Select(x => new MOCKTBLViewModel { FirstName = x.FirstName, LastName = x.LastName, Id = x.Id, Email = x.Email }).ToList();
-            //var custList = Common.GetEntries();
+            List<MOCKTBLViewModel> mTbl = Common.GetEntries().Select(x => new MOCKTBLViewModel { FirstName = x.FirstName, LastName = x.LastName, Id = x.Id, Email = x.Email }).ToList();            
             ViewBag.MOCKTBLList = mTbl;
             return View();
         }
@@ -54,6 +53,16 @@ namespace TestProj.Controllers
                 cust.Id = c.Id;
             }
             return PartialView("Update", cust);
+        }
+        
+        [HttpPost]
+        public JsonResult Delete(int Id)
+        {
+            bool result = false;
+
+            result = Common.DeleteEntry(Id);
+
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
     }
 }
