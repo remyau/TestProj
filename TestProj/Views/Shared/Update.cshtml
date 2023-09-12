@@ -1,0 +1,67 @@
+﻿@model TestProj.ViewModel.MOCKTBLViewModel
+@{
+    ViewBag.Title = "Update";
+}
+<style>
+    .txt {
+        margin-bottom: 10px;
+        width: 100%;
+    }
+</style>
+<div>
+    <form id="myForm">
+        @Html.HiddenFor(m => m.Id)
+        @*<div class="row">
+            <div class="col-md-12">*@
+        @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control txt", @placeholder = "First Name" })
+
+
+        @*</div>
+            </div>*@
+        @*<div class="row">
+            <div class="col-md-12">*@
+        @Html.TextBoxFor(m => m.LastName, new { @class = "form-control txt", @placeholder = "Last Name" })
+
+
+        @*</div>
+            </div>*@
+        @*<div class="row">
+            <div class="col-md-12">*@
+        @Html.TextBoxFor(m => m.Email, new { @class = "form-control txt", @placeholder = "Email" })
+
+        @*</div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">*@
+        <a href="#" id="btnSubmit" class="btn btn-success">Save</a>
+        @*</div>
+            </div>*@
+    </form>
+</div>
+@*@section scripts{*@
+<script>
+
+    $(document).on("click", "#btnSubmit", function (e) {
+        e.preventDefault();
+        
+        var myformdata = $("#myForm").serialize();
+
+        $.ajax({
+
+            type: "POST",
+            url: "/MOCKTBL/Index",
+            data: myformdata,
+            success: function () {
+                $("#myPopUpModal").modal("hide");
+                window.location.href = "/MOCKTBL/Index";
+                //alert("success");
+
+            }
+
+        })
+    });
+
+
+</script>
+@*}*@
+

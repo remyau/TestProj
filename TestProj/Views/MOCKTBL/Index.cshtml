@@ -1,0 +1,91 @@
+﻿@model TestProj.ViewModel.MOCKTBLViewModel
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="container">
+
+    <h2>Index</h2>
+
+    <p>
+        <a href="#" onclick="AddRecord();" id="update">Create New</a>
+    </p>
+
+    <table class="table">
+        <tr>
+            
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Action</th>
+        </tr>
+
+        @if (ViewBag.MOCKTBLList != null)
+        {
+            foreach (var item in ViewBag.MOCKTBLList)
+            {
+                <tr id="row_@item.Id">
+                    <td>@item.FirstName</td>
+                    <td>@item.LastName</td>
+                    <td>@item.Email</td>
+                    <td><a href="#" onclick="EditRecord(@item.Id);">Edit</a> | Delete</td>
+                    @*<td>
+                        @Html.DisplayFor(modelItem => item.FirstName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LastName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                    </td>*@
+                </tr>
+            }
+        }
+
+    </table>
+    <div id="myPopUpModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a href="#" class="close" data-dismiss="modal">&times;</a>
+                    <h3 class="modal-title">Add New</h3>
+                </div>
+                <div class="modal-body" id="myPopupModalContent"></div>
+            </div>
+        </div>
+    </div>
+    <input type="hidden" id="MOCKTBLId" />
+</div>
+
+@section scripts{
+    <script>
+        
+        var AddRecord = function () {
+            var url = '/MOCKTBL/AddNew';
+            popUpModal(url);
+            //$('#myPopupModalContent').load(url, function () {
+            //    $('#myPopUpModal').modal("show");
+            //});
+        }
+        var EditRecord = function (ItemId) {
+            alert(ItemId);
+            var url = '/MOCKTBL/Edit?Id=' + ItemId;
+            alert(url);
+            popUpModal(url);
+        }
+        function popUpModal(url) {
+            $('#myPopupModalContent').load(url, function () {
+                $('#myPopUpModal').modal("show");
+            });
+        }
+
+    </script>
+}
+
+
